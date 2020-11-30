@@ -4,40 +4,6 @@
 
 (function () {
 
-  // Установка значения поля адреса
-
-  var mapPinMain = window.setup.map.querySelector('.map__pin--main');
-
-  window.setAddressInputValue = function () {
-    var addressInput = window.setup.adForm.querySelector('#address');
-
-    var addressX = mapPinMain.style.left.replace('px', '');
-    var addressY = mapPinMain.style.top.replace('px', '');
-
-    if (!window.setup.isPageActive) {
-      addressInput.value = (+addressX + window.pin.PIN_SIZE.width / 2) + ', ' + (+addressY + window.pin.PIN_SIZE.width / 2);
-    } else {
-      addressInput.value = (+addressX + window.pin.PIN_SIZE.width / 2) + ', ' + (+addressY + window.pin.PIN_SIZE.height);
-    }
-  };
-
-  var handleMapPinMain = function () {
-    window.setup.setPageActive();
-    window.setAddressInputValue();
-  };
-
-  mapPinMain.addEventListener('mousedown', function (evt) {
-    if (evt.button === 0) {
-      handleMapPinMain();
-    }
-  });
-
-  mapPinMain.addEventListener('keydown', function (evt) {
-    if (evt.key === 'Enter') {
-      handleMapPinMain();
-    }
-  });
-
   // Валидация полей «Количество комнат» и «Количество мест»
 
   var roomNumberSelect = window.setup.adForm.querySelector('#room_number');
