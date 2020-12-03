@@ -4,17 +4,20 @@
 
 (function () {
 
+  window.mapPinMain = window.setup.map.querySelector('.map__pin--main');
+
   const PIN_MAIN_SIZE = {
     width: 64,
-    height: 82
+    height: 80
   };
 
-  const PIN_X_MIN = (innerWidth - document.body.clientWidth) / 2 + PIN_MAIN_SIZE.width / 2;
-  const PIN_X_MAX = innerWidth - (innerWidth - document.body.clientWidth) / 2 - PIN_MAIN_SIZE.width / 2;
+  var page = document.querySelector('.page');
+
+  const PIN_X_MIN = (page.clientWidth - document.body.clientWidth) / 2 + PIN_MAIN_SIZE.width / 2;
+  const PIN_X_MAX = page.clientWidth - (page.clientWidth - document.body.clientWidth) / 2 - PIN_MAIN_SIZE.width / 2;
+
   const PIN_Y_MIN = 130;
   const PIN_Y_MAX = 630;
-
-  window.mapPinMain = window.setup.map.querySelector('.map__pin--main');
 
   // Установка значения поля адреса
 
