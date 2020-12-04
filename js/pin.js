@@ -5,8 +5,8 @@
 (function () {
   window.pin = {
     PIN_SIZE: {
-      width: 64,
-      height: 82
+      width: 50,
+      height: 68
     },
     renderPin: function (pin) {
       var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
