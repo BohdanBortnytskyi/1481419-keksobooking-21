@@ -1,9 +1,11 @@
 'use strict';
 
-// Модуль отрисовки карточки по шаблону
+// Модуль для работы с карточками
 
 (function () {
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+
+  // Отрисовка карточки по шаблону
 
   window.renderCard = function (ad) {
     var cardElement = cardTemplate.cloneNode(true);
@@ -56,5 +58,62 @@
     cardAvatar.src = ad.author.avatar;
 
     return cardElement;
+  };
+
+  // Открыть и закрыть карточку объявления
+
+  var openMapCardPopup = function (targetPin, adsArray) {
+    for (var ad of adsArray) {
+      if (targetPin.src.includes(ad.author.avatar)) {
+        var mapCard = window.renderCard(ad);
+        var mapCardClose = mapCard.querySelector('.popup__close');
+        window.setup.map.insertBefore(mapCard, window.setup.mapFilters);
+
+        mapCardClose.addEventListener('click', function () {
+          closeMapCardPopup();
+        });
+
+        document.addEventListener('keydown', onMapCardPopupEscapePress);
+      }
+    }
+  };
+
+  var closeMapCardPopup = function () {
+    var mapCard = window.setup.map.querySelector('.map__card');
+    if (mapCard) {
+      window.setup.map.removeChild(mapCard);
+
+      document.removeEventListener('keydown', onMapCardPopupEscapePress);
+    }
+  };
+
+  window.addPinsClickEnterHandler = function (adsArray) {
+    var mapPins = window.setup.map.querySelectorAll('.map__pin');
+    for (var pin of mapPins) {
+      if (!pin.classList.contains('map__pin--main')) {
+        var targetElement;
+        pin.addEventListener('click', function (evt) {
+          if (evt.target.classList.contains('map__pin')) {
+            targetElement = evt.target.querySelector('img');
+          } else {
+            targetElement = evt.target;
+          }
+
+          var mapCard = window.setup.map.querySelector('.map__card');
+          if (mapCard) {
+            window.setup.map.removeChild(mapCard);
+            openMapCardPopup(targetElement, adsArray);
+          } else {
+            openMapCardPopup(targetElement, adsArray);
+          }
+        });
+      }
+    }
+  };
+
+  var onMapCardPopupEscapePress = function (evt) {
+    if (evt.key === 'Escape') {
+      closeMapCardPopup();
+    }
   };
 })();
