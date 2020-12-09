@@ -64,7 +64,7 @@
 
   var openMapCardPopup = function (targetPin, adsArray) {
     for (var ad of adsArray) {
-      if (targetPin.src.includes(ad.author.avatar)) {
+      if (targetPin.alt.includes(ad.offer.title)) {
         var mapCard = window.renderCard(ad);
         var mapCardClose = mapCard.querySelector('.popup__close');
         window.setup.map.insertBefore(mapCard, window.setup.mapFilters);
