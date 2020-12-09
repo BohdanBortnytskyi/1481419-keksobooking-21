@@ -7,18 +7,6 @@
 
   var TIMEOUT_IN_MS = 10000;
 
-  var onError = function (message) {
-    var errorNode = document.createElement('div');
-    errorNode.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red; color: white; padding: 5px';
-    errorNode.style.position = 'absolute';
-    errorNode.style.left = 0;
-    errorNode.style.right = 0;
-    errorNode.style.fontSize = '17px';
-
-    errorNode.textContent = message;
-    document.body.insertAdjacentElement('afterbegin', errorNode);
-  };
-
   // Загрузка данных с сервера
 
   window.uploadDataFromServer = function (onSuccess, onError) {
@@ -61,6 +49,19 @@
     xhr.send();
   };
 
+  var onError = function (message) {
+    var errorNode = document.createElement('div');
+    errorNode.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red; color: white; padding: 5px';
+    errorNode.style.position = 'absolute';
+    errorNode.style.left = 0;
+    errorNode.style.right = 0;
+    errorNode.style.fontSize = '17px';
+
+    errorNode.textContent = message;
+    document.body.insertAdjacentElement('afterbegin', errorNode);
+  };
+
+
   // Отрисовка пинов по данным с сервера
 
   window.showAdsPins = function () {
@@ -70,7 +71,7 @@
       }
       var pinsList = document.querySelector('.map__pins');
       pinsList.appendChild(window.setup.adsFragment);
-    }
+    };
 
     var onSuccess = function (data) {
       renderPinsFromServer(data);
