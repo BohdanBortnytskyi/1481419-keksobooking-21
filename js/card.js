@@ -89,7 +89,7 @@
 
   window.addPinsClickEnterHandler = function (adsArray) {
     var mapPins = window.setup.map.querySelectorAll('.map__pin');
-    for (var pin of mapPins) {
+    mapPins.forEach(function (pin) {
       if (!pin.classList.contains('map__pin--main')) {
         var targetElement;
         pin.addEventListener('click', function (evt) {
@@ -108,7 +108,7 @@
           }
         });
       }
-    }
+    });
   };
 
   var onMapCardPopupEscapePress = function (evt) {

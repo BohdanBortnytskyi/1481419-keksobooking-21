@@ -3,26 +3,32 @@
 // Модуль взаимодействия c удалённым сервером
 
 (function () {
-  var URL = 'https://21.javascript.pages.academy/keksobooking/data';
+  const URL = 'https://21.javascript.pages.academy/keksobooking/data';
 
-  var TIMEOUT_IN_MS = 10000;
+  const TIMEOUT_IN_MS = 10000;
+
+  const xhrStatus = {
+    success: 200,
+    badRequest: 400,
+    notFound: 404
+  }
 
   // Загрузка данных с сервера
 
-  window.uploadDataFromServer = function (onSuccess, onError) {
+  var uploadDataFromServer = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
       var error;
       switch (xhr.status) {
-        case 200:
+        case xhrStatus.success:
           onSuccess(xhr.response);
           break;
-        case 400:
+        case xhrStatus.badRequest:
           error = 'Неверный запрос';
           break;
-        case 404:
+        case xhrStatus.notFound:
           error = 'Ничего не найдено';
           break;
         default:
@@ -66,9 +72,10 @@
 
   window.showAdsPins = function () {
     var renderPinsFromServer = function (pinsArrray) {
-      for (var i = 0; i < pinsArrray.length; i++) {
-        window.setup.adsFragment.appendChild(window.pin.renderPin(pinsArrray[i]));
-      }
+      pinsArrray.forEach(function (pin) {
+        window.setup.adsFragment.appendChild(window.pin.renderPin(pin));
+      });
+
       var pinsList = document.querySelector('.map__pins');
       pinsList.appendChild(window.setup.adsFragment);
     };
@@ -78,6 +85,6 @@
       window.addPinsClickEnterHandler(data);
     };
 
-    window.uploadDataFromServer(onSuccess, onError);
+    uploadDataFromServer(onSuccess, onError);
   };
 })();
