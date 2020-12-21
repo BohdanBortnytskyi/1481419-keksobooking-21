@@ -63,19 +63,19 @@
   // Открыть и закрыть карточку объявления
 
   var openMapCardPopup = function (targetPin, adsArray) {
-    for (var ad of adsArray) {
-      if (targetPin.alt.includes(ad.offer.title)) {
-        var mapCard = window.renderCard(ad);
-        var mapCardClose = mapCard.querySelector('.popup__close');
-        window.setup.map.insertBefore(mapCard, window.setup.mapFilters);
+    var ad = adsArray.filter(function (item) {
+      return targetPin.id == item.id;
+    });
 
-        mapCardClose.addEventListener('click', function () {
-          closeMapCardPopup();
-        });
+    var mapCard = window.renderCard(ad[0]);
+    var mapCardClose = mapCard.querySelector('.popup__close');
+    window.setup.map.insertBefore(mapCard, window.setup.mapFilters);
 
-        document.addEventListener('keydown', onMapCardPopupEscapePress);
-      }
-    }
+    mapCardClose.addEventListener('click', function () {
+      closeMapCardPopup();
+    });
+
+    document.addEventListener('keydown', onMapCardPopupEscapePress);
   };
 
   var closeMapCardPopup = function () {
@@ -94,9 +94,9 @@
         var targetElement;
         pin.addEventListener('click', function (evt) {
           if (evt.target.classList.contains('map__pin')) {
-            targetElement = evt.target.querySelector('img');
-          } else {
             targetElement = evt.target;
+          } else {
+            targetElement = evt.target.parentElement;
           }
 
           var mapCard = window.setup.map.querySelector('.map__card');

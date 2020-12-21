@@ -67,13 +67,15 @@
     document.body.insertAdjacentElement('afterbegin', errorNode);
   };
 
-
   // Отрисовка пинов по данным с сервера
 
   window.showAdsPins = function () {
     var renderPinsFromServer = function (pinsArrray) {
+      var numPins = 0;
       pinsArrray.forEach(function (pin) {
+        pin.id = 'pin' + numPins;
         window.setup.adsFragment.appendChild(window.pin.renderPin(pin));
+        numPins++;
       });
 
       var pinsList = document.querySelector('.map__pins');
