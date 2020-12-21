@@ -64,7 +64,7 @@
 
   var openMapCardPopup = function (targetPin, adsArray) {
     var ad = adsArray.filter(function (item) {
-      return targetPin.id == item.id;
+      return targetPin.id === item.id;
     });
 
     var mapCard = window.renderCard(ad[0]);
