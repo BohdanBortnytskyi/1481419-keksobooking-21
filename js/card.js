@@ -7,7 +7,7 @@
 
   // Отрисовка карточки по шаблону
 
-  window.renderCard = function (ad) {
+  var renderCard = function (ad) {
     var cardElement = cardTemplate.cloneNode(true);
 
     var cardTitle = cardElement.querySelector('.popup__title');
@@ -67,7 +67,7 @@
       return targetPin.id === item.id;
     });
 
-    var mapCard = window.renderCard(ad[0]);
+    var mapCard = renderCard(ad[0]);
     var mapCardClose = mapCard.querySelector('.popup__close');
     window.setup.map.insertBefore(mapCard, window.setup.mapFilters);
 
