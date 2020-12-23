@@ -18,6 +18,8 @@
       pinImage.src = pin.author.avatar;
       pinImage.alt = pin.offer.title;
 
+      pinElement.id = pin.id;
+
       return pinElement;
     }
   };

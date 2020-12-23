@@ -39,10 +39,7 @@
         filter.disabled = false;
       }
 
-      var pinsList = document.querySelector('.map__pins');
-      pinsList.appendChild(this.adsFragment);
-
-      window.addPinsClickEnterHandler();
+      window.showAdsPins();
 
       this.isPageActive = true;
     }

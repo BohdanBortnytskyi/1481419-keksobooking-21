@@ -35,8 +35,10 @@
   };
 
   var handleMapPinMain = function () {
-    window.setup.setPageActive();
-    window.setAddressInputValue();
+    if (!window.setup.isPageActive) {
+      window.setup.setPageActive();
+      window.setAddressInputValue();
+    }
   };
 
   window.mapPinMain.addEventListener('keydown', function (evt) {
@@ -45,7 +47,7 @@
     }
   });
 
-  // Перемещение главной метки
+  // Клик по главной метке и ее перемещение
 
   window.mapPinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
