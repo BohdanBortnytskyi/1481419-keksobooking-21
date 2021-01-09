@@ -127,4 +127,18 @@
   timeOut.addEventListener('change', function (evt) {
     setTimeInOption(evt.target.value);
   });
+
+  // Сброс полей формы
+
+  window.resetFormFields = function () {
+    var title = window.setup.adForm.querySelector('#title');
+    title.value = '';
+
+    var price = window.setup.adForm.querySelector('#price');
+    price.value = '';
+
+    var description = window.setup.adForm.querySelector('#description');
+    description.value = '';
+  }
+
 })();

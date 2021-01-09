@@ -3,7 +3,8 @@
 // Модуль взаимодействия c удалённым сервером
 
 (function () {
-  const URL = 'https://21.javascript.pages.academy/keksobooking/data';
+  const DOWNLOAD_URL = 'https://21.javascript.pages.academy/keksobooking/data';
+  const UPLOAD_URL = 'https://21.javascript.pages.academy/keksobooking';
 
   const TIMEOUT_IN_MS = 10000;
 
@@ -13,9 +14,9 @@
     notFound: 404
   };
 
-  // Загрузка данных с сервера
+  // Скачивание данных с сервера
 
-  var uploadDataFromServer = function (onSuccess, onError) {
+  var downloadDataFromServer = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
@@ -50,7 +51,7 @@
 
     xhr.timeout = TIMEOUT_IN_MS;
 
-    xhr.open('GET', URL);
+    xhr.open('GET', DOWNLOAD_URL);
 
     xhr.send();
   };
@@ -87,6 +88,35 @@
       window.addPinsClickEnterHandler(data);
     };
 
-    uploadDataFromServer(onSuccess, onError);
+    downloadDataFromServer(onSuccess, onError);
   };
+
+  // Загрузка данных на сервер
+
+  var uploadDataToServer = function (data, onSuccess) {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'json';
+
+    xhr.addEventListener('load', function () {
+      onSuccess(xhr.response);
+    });
+
+    xhr.open('POST', UPLOAD_URL);
+    xhr.send(data);
+  }
+
+  // Отправка данных формы
+
+  window.setup.adForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+
+    var formData = new FormData(window.setup.adForm);
+
+    uploadDataToServer(formData, function () {
+      window.resetFormFields();
+      window.setup.setPageInactive();
+      window.setAddressInputValue();
+    });
+  });
+
 })();
