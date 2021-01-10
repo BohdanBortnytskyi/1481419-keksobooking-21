@@ -105,18 +105,52 @@
     xhr.send(data);
   }
 
-  // Отправка данных формы
+  // Сообщение об успешной отправке данных
+
+  var showSuccessMessage = function () {
+    var successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
+    var sucessMessageElement = successMessageTemplate.cloneNode(true);
+
+    document.body.insertAdjacentElement('afterbegin', sucessMessageElement);
+
+    document.addEventListener('keydown', onSuccessMessageEscapePress);
+
+    document.addEventListener('click', hideSuccessMessage);
+  }
+
+  var hideSuccessMessage = function () {
+    var successMessage = document.querySelector('.success');
+
+    if (successMessage) {
+      document.body.removeChild(successMessage);
+
+      document.removeEventListener('keydown', onSuccessMessageEscapePress);
+
+      document.removeEventListener('click', hideSuccessMessage);
+    }
+  }
+
+  var onSuccessMessageEscapePress = function (evt) {
+    if (evt.key === 'Escape') {
+      hideSuccessMessage();
+    }
+  };
+
+  // Отправка данных формы на сервер
 
   window.setup.adForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
 
     var formData = new FormData(window.setup.adForm);
 
-    uploadDataToServer(formData, function () {
+    var onSuccess = function () {
       window.resetFormFields();
       window.setup.setPageInactive();
       window.setAddressInputValue();
-    });
+      showSuccessMessage();
+    }
+
+    uploadDataToServer(formData, onSuccess);
   });
 
 })();
