@@ -141,4 +141,7 @@
     description.value = '';
   }
 
+  var adFormResetButton = window.setup.adForm.querySelector('.ad-form__reset');
+  adFormResetButton.addEventListener('click', resetFormFields);
+
 })();
