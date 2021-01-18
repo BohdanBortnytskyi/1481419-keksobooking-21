@@ -11,7 +11,8 @@
   const xhrStatus = {
     success: 200,
     badRequest: 400,
-    notFound: 404
+    notFound: 404,
+    internatServerError: 500
   };
 
   // Скачивание данных с сервера
@@ -33,16 +34,16 @@
           error = 'Ничего не найдено';
           break;
         default:
-          error = 'Cтатус ответа: : ' + xhr.status + ' ' + xhr.statusText;
+          error = 'Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText;
       }
 
       if (error) {
-        onError(error);
+        onError('Произошла ошибка скачивания данных с сервера! ' + error);
       }
     });
 
     xhr.addEventListener('error', function () {
-      onError('Произошла ошибка соединения');
+      onError('Произошла ошибка скачивания данных с сервера!');
     });
 
     xhr.addEventListener('timeout', function () {
@@ -56,7 +57,7 @@
     xhr.send();
   };
 
-  var onError = function (message) {
+  var onDownloadError = function (message) {
     var errorNode = document.createElement('div');
     errorNode.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red; color: white; padding: 5px';
     errorNode.style.position = 'absolute';
@@ -88,7 +89,7 @@
       window.addPinsClickEnterHandler(data);
     };
 
-    downloadDataFromServer(onSuccess, onError);
+    downloadDataFromServer(onSuccess, onDownloadError);
   };
 
   // Загрузка данных на сервер
@@ -98,7 +99,15 @@
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      onSuccess(xhr.response);
+      if (xhr.status === xhrStatus.success) {
+        onSuccess(xhr.response);
+      } else {
+        onUploadError();
+      }
+    });
+
+    xhr.addEventListener('error', function () {
+      onUploadError('Произошла ошибка загрузки данных на сервер');
     });
 
     xhr.open('POST', UPLOAD_URL);
@@ -133,6 +142,42 @@
   var onSuccessMessageEscapePress = function (evt) {
     if (evt.key === 'Escape') {
       hideSuccessMessage();
+    }
+  };
+
+  // Сообщение об ошибке отправки данных
+
+  var onUploadError = function () {
+    var errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
+    var errorMessageElement = errorMessageTemplate.cloneNode(true);
+
+    var mainSection = document.querySelector('main');
+    var errorButton = mainSection.querySelector('.error__button');
+
+    mainSection.insertAdjacentElement('afterbegin', errorMessageElement);
+
+    document.addEventListener('keydown', onErrorMessageErrBtnAndEscapePress);
+
+    document.addEventListener('click', hideErrorMessage);
+  };
+
+  var hideErrorMessage = function () {
+    var errorMessage = document.querySelector('.error');
+
+    var mainSection = document.querySelector('main');
+
+    if (errorMessage) {
+      mainSection.removeChild(errorMessage);
+
+      document.removeEventListener('keydown', onErrorMessageErrBtnAndEscapePress);
+
+      document.removeEventListener('click', hideErrorMessage);
+    }
+  }
+
+  var onErrorMessageErrBtnAndEscapePress = function (evt) {
+    if (evt.key === 'Escape') {
+      hideErrorMessage();
     }
   };
 
