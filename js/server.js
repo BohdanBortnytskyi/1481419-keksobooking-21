@@ -4,7 +4,7 @@
 
 (function () {
   const DOWNLOAD_URL = 'https://21.javascript.pages.academy/keksobooking/data';
-  const UPLOAD_URL = 'https://21.javascript.pages.academy/keksobooking';
+  const UPLOAD_URL = 'https://21.javascript.pages.academy/keksobooking1';
 
   const TIMEOUT_IN_MS = 10000;
 
@@ -107,12 +107,12 @@
     });
 
     xhr.addEventListener('error', function () {
-      onUploadError('Произошла ошибка загрузки данных на сервер');
+      onUploadError();
     });
 
     xhr.open('POST', UPLOAD_URL);
     xhr.send(data);
-  }
+  };
 
   // Сообщение об успешной отправке данных
 
@@ -125,7 +125,7 @@
     document.addEventListener('keydown', onSuccessMessageEscapePress);
 
     document.addEventListener('click', hideSuccessMessage);
-  }
+  };
 
   var hideSuccessMessage = function () {
     var successMessage = document.querySelector('.success');
@@ -137,7 +137,7 @@
 
       document.removeEventListener('click', hideSuccessMessage);
     }
-  }
+  };
 
   var onSuccessMessageEscapePress = function (evt) {
     if (evt.key === 'Escape') {
@@ -152,13 +152,17 @@
     var errorMessageElement = errorMessageTemplate.cloneNode(true);
 
     var mainSection = document.querySelector('main');
-    var errorButton = mainSection.querySelector('.error__button');
-
     mainSection.insertAdjacentElement('afterbegin', errorMessageElement);
 
-    document.addEventListener('keydown', onErrorMessageErrBtnAndEscapePress);
+    var errorButton = mainSection.querySelector('.error__button');
+
+    document.addEventListener('keydown', onErrorMessageEscapePress);
 
     document.addEventListener('click', hideErrorMessage);
+
+    errorButton.addEventListener('click', function () {
+      hideErrorMessage();
+    });
   };
 
   var hideErrorMessage = function () {
@@ -169,13 +173,13 @@
     if (errorMessage) {
       mainSection.removeChild(errorMessage);
 
-      document.removeEventListener('keydown', onErrorMessageErrBtnAndEscapePress);
+      document.removeEventListener('keydown', onErrorMessageEscapePress);
 
       document.removeEventListener('click', hideErrorMessage);
     }
-  }
+  };
 
-  var onErrorMessageErrBtnAndEscapePress = function (evt) {
+  var onErrorMessageEscapePress = function (evt) {
     if (evt.key === 'Escape') {
       hideErrorMessage();
     }
@@ -193,7 +197,7 @@
       window.setup.setPageInactive();
       window.setAddressInputValue();
       showSuccessMessage();
-    }
+    };
 
     uploadDataToServer(formData, onSuccess);
   });

@@ -139,9 +139,9 @@
 
     var description = window.setup.adForm.querySelector('#description');
     description.value = '';
-  }
+  };
 
   var adFormResetButton = window.setup.adForm.querySelector('.ad-form__reset');
-  adFormResetButton.addEventListener('click', resetFormFields);
+  adFormResetButton.addEventListener('click', window.resetFormFields);
 
 })();
